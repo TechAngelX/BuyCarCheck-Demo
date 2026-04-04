@@ -42,7 +42,7 @@ The service helps buyers avoid purchasing written-off, uninsured, or incorrectly
 
 ## User Engagement
 
-- 7 SEO-optimised blog articles targeting UK car buying search terms
+- SEO-optimised blog articles targeting UK car buying search terms
 - Structured data (JSON-LD) for Google rich results
 - Dynamic sitemap + robots.txt
 
