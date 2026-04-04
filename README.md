@@ -1,10 +1,24 @@
-# BuyCarCheck
+<div align="center">
+  <img src="./readme_images/logo.png" alt="BuyCarCheck" width="80" style="border-radius: 50%;" />
+  <h1>BuyCarCheck</h1>
+  <p><strong>UK Vehicle History Checker</strong> — live at <a href="https://buycarcheck.com">buycarcheck.com</a></p>
+</div>
 
-> **Note**: This is a public portfolio showcase of a live, private project.
-> The full source code is kept private to protect proprietary business logic, API integrations, and infrastructure.
-> This repo exists to demonstrate tech stack, architecture, and code quality to prospective employers and collaborators.
+---
+
+> ## ⚠️ Public Showcase — Proprietary Source Code is Private
 >
-> The live site is at **[buycarcheck.com](https://buycarcheck.com)**
+> This repository is a **intentionally limited public showcase** of [buycarcheck.com](https://buycarcheck.com).
+>
+> The full production codebase is **privately held** to protect:
+> - Government API credentials (DVLA, DVSA)
+> - Payment processing logic (Stripe)
+> - Proprietary business logic and admin infrastructure
+> - Internal analytics and operational tooling
+>
+> What you'll find here: the README, TypeScript type definitions, a Zod validation schema, a representative API route, and a test suite — enough to demonstrate architecture, code style, and engineering approach.
+>
+> **To view the live product, visit [buycarcheck.com](https://buycarcheck.com).**
 
 ---
 
@@ -14,37 +28,39 @@
 
 ## What is BuyCarCheck?
 
-BuyCarCheck is a live UK vehicle history checking service. Users enter a number plate and instantly receive vehicle data pulled from official government sources — helping buyers make informed decisions before purchasing a used car.
+BuyCarCheck is a full-stack SaaS product built for the UK used car market. A buyer enters any UK number plate and receives an instant vehicle history report — pulled in real time from official government data sources.
+
+The service helps buyers avoid purchasing written-off, uninsured, or incorrectly advertised vehicles before handing over money.
 
 ## Features
 
-- **Free Basic Check** — Vehicle make, model, colour, tax status, MOT status, engine size, fuel type & CO2 emissions
-- **Paid Full Check (£2.99)** — Write-off category (Cat S/N), finance check, mileage history, plate changes
-- Real-time data via official DVLA & DVSA APIs
-- MOT history with pass/fail records, advisories, and mileage progression
-- VED (road tax) band calculator based on CO2 emissions
-- Mobile-responsive, fast, SEO-optimised
+- **Free Basic Check** — Make, model, colour, engine size, fuel type, CO2 emissions, tax status, MOT status, V5C date
+- **Paid Full Check (£2.99)** — Write-off category (Cat S / Cat N), outstanding finance, mileage history, plate change history
+- MOT history with pass/fail records, advisories, failure reasons, and mileage progression
+- VED (road tax) band calculator — CO2-based, with separate pre/post-2017 logic
+- Fuel efficiency estimator (MPG, L/100km, annual cost)
 
 ## User Engagement
 
-- Feature-rich educational blog (7 articles, statically rendered, SEO-first)
-- Structured data / JSON-LD for Google rich results
-- Dynamic sitemap & robots.txt
+- 7 SEO-optimised blog articles targeting UK car buying search terms
+- Structured data (JSON-LD) for Google rich results
+- Dynamic sitemap + robots.txt
 
 ![BuyCarCheck Screenshot](readme_images/screenshot4.png)
 
 ## Detailed Vehicle Statistics
 
-- CO2 band & estimated annual road tax cost
-- Fuel efficiency calculator (MPG / L/100km / estimated annual fuel cost)
-- Pre/post-2017 VED logic (different tax rules apply)
+- CO2 band lookup across all 13 UK VED bands (A–M)
+- Estimated annual and 6-month road tax cost
+- Pre/post-2017 registration split (different tax rules apply by law)
 
 ![BuyCarCheck Screenshot](readme_images/screenshot3.png)
 
-## Call To Action
+## Pricing & Conversion
 
-- Tiered pricing plan (Free / Full Check)
+- Tiered free/paid model
 - Customer reviews section
+- Animated stats counters
 
 ![BuyCarCheck Screenshot](readme_images/screenshot5.png)
 
@@ -58,27 +74,28 @@ BuyCarCheck is a live UK vehicle history checking service. Users enter a number 
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
 | UI Components | Radix UI + shadcn/ui |
-| State Management | Zustand |
+| State | Zustand |
 | Data Fetching | TanStack React Query |
 | Validation | Zod |
 | Database | Supabase (PostgreSQL) |
 | Payments | Stripe |
+| Testing | Jest + Testing Library |
 | Deployment | Vercel |
 
 ## External API Integrations
 
-- **DVLA Vehicle Enquiry API** — tax status, MOT status, registration data
-- **DVSA MOT History API** — full MOT test history via Azure AD OAuth2 (client credentials flow)
+- **DVLA Vehicle Enquiry API** — real-time tax, MOT and registration data
+- **DVSA MOT History API** — full MOT test history via Azure AD OAuth2 (client credentials flow with in-memory token caching)
 - **Write-off data provider** — Cat S/N check (integration in progress)
 - **Stripe** — payment processing for full reports
 
 ## Architecture Highlights
 
-- **Server Components by default** — all data-fetching pages are server-rendered for SEO and performance
-- **OAuth2 token caching** — DVSA access tokens cached in-memory with auto-refresh on expiry
-- **Graceful mock fallback** — if API keys are absent, realistic seeded mock data is returned (deterministic by registration)
-- **Privacy-first analytics** — custom visitor tracking with no cookies, no IP storage, Supabase backend
-- **Bot filtering** — headless browser detection (`navigator.webdriver`), UA pattern matching, rate-limited auth endpoints
+- **Server Components by default** — all data-fetching pages are server-rendered for SEO and TTFB
+- **OAuth2 token caching** — DVSA Azure AD tokens cached in-memory, auto-refreshed on 401
+- **Graceful mock fallback** — runs fully without API credentials using deterministic seeded mock data
+- **Privacy-first analytics** — custom visitor tracking, no cookies, no IP storage
+- **Bot filtering** — headless browser detection, UA pattern matching, rate-limited auth endpoints
 
 ## Project Structure
 
@@ -90,42 +107,59 @@ src/
 │   │       ├── basic/          # Free DVLA vehicle check
 │   │       ├── mot-history/    # DVSA MOT history (OAuth2)
 │   │       └── writeoff/       # Paid write-off check
-│   ├── blog/                   # 7 static SEO blog posts
+│   ├── blog/                   # 7 static SEO articles
 │   ├── sample-report/          # Example report page
 │   ├── layout.tsx
-│   └── page.tsx                # Homepage
+│   └── page.tsx
 ├── components/
 │   ├── vehicle/
-│   │   ├── VehicleCheckForm.tsx  # UK plate input with recent history
-│   │   └── VehicleReport.tsx     # Full report display
+│   │   ├── VehicleCheckForm.tsx  # UK plate input with search history
+│   │   └── VehicleReport.tsx     # Full report — MOT, tax, VED, write-off
 │   ├── home/                     # Hero, pricing, reviews, stats
 │   └── ui/                       # shadcn/ui base components
 ├── lib/
-│   ├── ved.ts                    # UK road tax band calculator
+│   ├── ved.ts                    # UK road tax band calculator (13 CO2 bands)
 │   └── validators/               # Zod schemas
-└── types/
-    └── vehicle.ts                # TypeScript interfaces
+├── types/
+│   └── vehicle.ts                # TypeScript interfaces
+└── __tests__/                    # Jest test suite
 ```
 
-## Why is the full repo private?
-
-The live codebase contains:
-- Government API credentials (DVLA, DVSA)
-- Payment processing logic (Stripe)
-- Admin dashboard and internal analytics
-- Proprietary business logic
-
-Keeping it private protects the integrity of the live service. This portfolio repo exists to give visibility into the architecture and code quality without exposing production infrastructure.
-
----
-
-## Scripts
+## Tests
 
 ```bash
-npm run dev      # Development server (localhost:3000)
-npm run build    # Production build
-npm run lint     # ESLint
+npm test
 ```
+
+```
+PASS src/__tests__/vehicle-validator.test.ts
+  registrationSchema
+    ✓ accepts a standard current-format plate
+    ✓ strips spaces and uppercases input
+    ✓ accepts a personalised plate
+    ✓ rejects a single character
+    ✓ rejects a plate over 8 characters
+    ✓ rejects an empty string
+
+PASS src/__tests__/mock-data.test.ts
+  getMockData
+    ✓ returns the registration that was passed in
+    ✓ returns numeric engine capacity
+    ✓ returns a valid tax status string
+    ✓ returns a valid MOT status string
+    ✓ returns a year within a plausible range
+```
+
+## Running Locally
+
+```bash
+git clone https://github.com/TechAngelX/buycarcheck-public.git
+cd buycarcheck-public
+npm install
+npm run dev
+```
+
+Without API keys the app runs entirely on mock data — no credentials needed to explore the UI.
 
 ## Environment Variables
 
@@ -144,21 +178,17 @@ NEXT_PUBLIC_SUPABASE_URL=https://...
 SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-Without API keys the app runs entirely on mock data, so you can run it locally without any credentials.
-
 ---
 
 ***
 
-<h2 style="text-align: center;">Built by Ricki Angel</h2>
 <div align="center">
+  <br />
   <a href="https://techangelx.com" target="_blank" rel="noopener noreferrer">
-    <img src="./readme_images/logo.png" alt="Tech Angel X Logo" width="70" height="70" style="vertical-align: middle; border-radius: 50%; border: 4px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+    <img src="./readme_images/logo.png" alt="Tech Angel X" width="70" height="70" style="border-radius: 50%; border: 4px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
   </a>
   <br /><br />
-  <span style="font-size: 1.4em; font-weight: 300;">
-    <b>Ricki Angel</b> • <a href="https://techangelx.com" target="_blank" rel="noopener noreferrer">Tech Angel X</a>
-  </span>
+  <strong>Built by Ricki Angel</strong> · <a href="https://techangelx.com">Tech Angel X</a>
   <br />
-  <span style="font-size: 1em; color: #888;">© 2026 · All rights reserved</span>
+  <sub>© 2026 · Proprietary · All rights reserved</sub>
 </div>
