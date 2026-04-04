@@ -35,7 +35,7 @@ The service helps buyers avoid purchasing written-off, uninsured, or incorrectly
 ## Features
 
 - **Free Basic Check** — Make, model, colour, engine size, fuel type, CO2 emissions, tax status, MOT status, V5C date
-- **Paid Full Check (£2.99)** — Write-off category (Cat S / Cat N), outstanding finance, mileage history, plate change history
+- **Paid Full Check (£4.99)** — Write-off category (Cat S / Cat N), outstanding finance, mileage history, plate change history
 - MOT history with pass/fail records, advisories, failure reasons, and mileage progression
 - VED (road tax) band calculator — CO2-based, with separate pre/post-2017 logic
 - Fuel efficiency estimator (MPG, L/100km, annual cost)
@@ -82,20 +82,24 @@ The service helps buyers avoid purchasing written-off, uninsured, or incorrectly
 | Testing | Jest + Testing Library |
 | Deployment | Vercel |
 
-## External API Integrations
+## REST API & Cloud Service Integrations
 
-- **DVLA Vehicle Enquiry API** — real-time tax, MOT and registration data
-- **DVSA MOT History API** — full MOT test history via Azure AD OAuth2 (client credentials flow with in-memory token caching)
-- **Write-off data provider** — Cat S/N check (integration in progress)
-- **Stripe** — payment processing for full reports
+- **DVLA Vehicle Enquiry REST API** — real-time tax, MOT and registration data from the UK government cloud
+- **DVSA MOT History REST API** — full MOT test history, authenticated via Azure AD OAuth2 client credentials flow with server-side token caching
+- **Stripe** — cloud payment processing for full report purchases
+- **Supabase** — managed PostgreSQL cloud database for analytics, accessed via REST and the Supabase JS client
+- **Write-off data provider** — Cat S/N check (third-party REST API integration in progress)
 
 ## Architecture Highlights
 
+- **REST API routes** — Next.js App Router API handlers expose typed POST endpoints consumed by the frontend, with Zod validation at every entry point
 - **Server Components by default** — all data-fetching pages are server-rendered for SEO and TTFB
-- **OAuth2 token caching** — DVSA Azure AD tokens cached in-memory, auto-refreshed on 401
+- **Cloud service integrations** — DVLA and DVSA are UK government cloud REST APIs; Stripe and Supabase are third-party cloud platforms, all integrated via server-side service calls
+- **Middleware** — Next.js middleware intercepts every request for bot detection, unknown path logging, and rate limiting before it reaches any route handler
+- **PostgreSQL database** — Supabase-hosted Postgres stores visitor analytics in a private schema; all writes use the service role key server-side, never exposed to the client
+- **OAuth2 token caching** — DVSA Azure AD tokens cached in-memory with auto-refresh on 401 — no redundant auth round-trips
 - **Graceful mock fallback** — runs fully without API credentials using deterministic seeded mock data
-- **Privacy-first analytics** — custom visitor tracking, no cookies, no IP storage
-- **Bot filtering** — headless browser detection, UA pattern matching, rate-limited auth endpoints
+- **Privacy-first analytics** — custom visitor tracking with no cookies, no IP storage, backed by Supabase
 
 ## Project Structure
 
@@ -153,8 +157,8 @@ PASS src/__tests__/mock-data.test.ts
 ## Running Locally
 
 ```bash
-git clone https://github.com/TechAngelX/buycarcheck-public.git
-cd buycarcheck-public
+git clone https://github.com/TechAngelX/BuyCarCheck-Demo.git
+cd BuyCarCheck-Demo
 npm install
 npm run dev
 ```
