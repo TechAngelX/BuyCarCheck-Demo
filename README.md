@@ -38,11 +38,13 @@ The product solves a real problem: every year thousands of UK buyers unknowingly
 
 **Live product · paying customers · real government API integrations · fully serverless.**
 
+---
+
 ## Competitive Landscape
 
-The established players — **HPI Check**, **Motorway**, and **AutoTrader** — dominate on brand recognition but carry the weight of legacy infrastructure: cluttered interfaces, dated UX, and astronomical pricing (£19.99) that hasn't moved in years. BuyCarCheck's moat is straightforward: a cleaner, faster, and more accessible product at a significantly lower price point, built from the gorund up with modern tooling (React/Next.js/Tailwind), as well as some key proprietary logic and tech. 
+The established players — **HPI Check**, **Motorway**, and **AutoTrader** — dominate on brand recognition but carry the weight of legacy infrastructure: cluttered interfaces, dated UX, and pricing (£19.99+) that hasn't moved in years.
 
-More than just a car check service, our vehicle reports and blog posts humanise the car-buying experience in a way the incumbents can't compete with. This entire project afterall, is based on the founder's own personal experience. 
+BuyCarCheck's moat is a cleaner, faster, and more accessible product at a significantly lower price point, built from the ground up with modern tooling, alongside proprietary logic that improves with every search. The blog humanises the car-buying experience in a way the incumbents don't bother with — this product is built by someone who has lived the problem firsthand.
 
 ---
 
@@ -74,7 +76,6 @@ Full **Stripe Checkout** integration — hosted payment page, webhook signature 
 - Serverless-safe rate limiting via Redis (per-IP, sliding window, cross-instance)
 - Front-door proxy guard for direct URL access — social share links use a signed bypass parameter
 - Stripe webhook signature verification on every inbound event
-
 
 ### Data Integrations
 | Source                                  | What it provides | Auth method |
@@ -111,13 +112,21 @@ Full **Stripe Checkout** integration — hosted payment page, webhook signature 
 
 ## UX & Accessibility
 
-- **Frictionless mobile-first design** — the primary user is standing in a car park or at a dealership. The plate input, free check, and purchase flow are optimised for one-handed use on a phone in any lighting condition
-- **WCAG 2.1 AA compliant** — full accessibility pass: colour contrast ratios (4.5:1+ on all text), `aria-label` on all interactive elements, `aria-hidden` on all decorative SVGs, visible focus rings on every interactive control, form field labels, video pause control for auto-playing media
-- **Responsive across all breakpoints** — dedicated mobile layout with large touch targets, left-aligned plate font, prominent standalone CTA button; desktop layout uses a joined pill-style form
-- **Light mode default** — optimised for outdoor readability; user preference persisted to localStorage
-- **Post-purchase actions** — Print / Save PDF / Share on WhatsApp (with OG image preview and correct accessible contrast on WhatsApp green)
-- **10 language locales** — full i18n via Next.js App Router locale segments: 🇬🇧 English · 🇩🇪 German · 🇪🇸 Spanish · 🇫🇷 French · 🇮🇹 Italian · 🇵🇱 Polish · 🇸🇦 Arabic (RTL) · 🇷🇺 Russian · 🇨🇳 Chinese · 🇯🇵 Japanese — UI copy, hero text, and blog routes all locale-aware with persistent language preference via cookie
+- **Frictionless mobile-first design** — built for someone standing in a car park, one hand on the car. Plate input, free check, and purchase flow all optimised for mobile in any lighting condition
 
+
+- **10 language locales** — Next.js App Router locale segments, UI copy and blog routes fully translated, language preference persisted via session cookies.
+
+| 🇬🇧 English | 🇩🇪 German | 🇪🇸 Spanish | 🇫🇷 French | 🇮🇹 Italian |
+|:---:|:---:|:---:|:---:|:---:|
+| 🇵🇱 Polish | 🇸🇦 Arabic _(RTL)_ | 🇷🇺 Russian | 🇨🇳 Chinese | 🇯🇵 Japanese |
+
+
+
+- **WCAG 2.1 AA compliant** — contrast ratios 4.5:1+ on all text, `aria-label` on all controls, `aria-hidden` on decorative SVGs, visible focus rings, form field labels, video pause control
+- **Fully responsive** — dedicated mobile layout with large touch targets and standalone CTA; desktop uses a compact joined pill-style form
+- **Light mode default** — optimised for outdoor readability; preference persisted to `localStorage`
+- **Post-purchase actions** — Print report, Save as PDF, Share on WhatsApp with branded OG image preview
 ---
 
 ## Content & SEO
