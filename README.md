@@ -166,13 +166,13 @@ src/
 │   └── layout/                    # Header (i18n, dark mode, language picker)
 ├── lib/
 │   ├── DataProviderSwitch.ts      # Provider abstraction layer, multi-source data fetching
-│   ├── ratelimit.ts               # Upstash Redis rate limiters
+│   ├── ratelimit.ts               # Redis rate limiters
 │   ├── ved.ts                     # UK VED band calculator (13 CO₂ bands, pre/post-2017)
 │   ├── provider.ts                # Licensed data provider parser → FullHistoryData
 │   └── validators/                # Zod schemas
 ├── types/
 │   └── VehicleSpecifications.ts   # FullHistoryData, BasicVehicleInfo, all core types
-├── proxy.ts                       # Edge: maintenance mode, rate limiting, origin guard
+├── middleware.ts                  # Edge: maintenance mode, rate limiting, origin guard
 └── __tests__/                     # Jest suite
 ```
 
@@ -201,6 +201,8 @@ PASS src/__tests__/mock-data.test.ts
     ✓ returns a valid tax status string
     ✓ returns a valid MOT status string
     ✓ returns a year within a plausible range
+    
+    ... other jest unit/integration tests
 ```
 
 ---
@@ -240,7 +242,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 NEXT_PUBLIC_DB_URL=
 DB_SERVICE_KEY=
 
-# Redis rate limiting (Upstash / AWS)
+# Redis rate limiting (AWS)
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
 
@@ -256,6 +258,8 @@ NEXT_PUBLIC_AW_CONVERSION_LABEL=
 ---
 
 <div align="center">
+  <br />
+  <p>Thanks for checking out this demo. If you'd like to discuss the product, the engineering, or potential collaboration — feel free to reach out.</p>
   <br />
   <a href="https://techangelx.com" target="_blank" rel="noopener noreferrer">
     <img src="./readme_images/logo.png" alt="Tech Angel X" width="70" height="70" style="border-radius: 50%; border: 4px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
