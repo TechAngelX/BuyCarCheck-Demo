@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./readme_images/BCC-MAIN-LOGO-FULL.png" alt="BuyCarCheck Logo" width="450"  />
+  <img src="./readme_images/BCC-MAIN-LOGO-FULL.png" alt="BuyCarCheck Logo" width="320"  />
   <p><strong>Full-Stack UK Vehicle History SaaS</strong> — live at <a href="https://buycarcheck.com">buycarcheck.com</a></p>
   <p>
     <img src="https://img.shields.io/badge/Next.js-App%20Router-1e3a8a?style=for-the-badge&logo=next.js&logoColor=white" />
